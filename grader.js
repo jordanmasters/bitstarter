@@ -58,19 +58,19 @@ if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>','index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-        .option('-u, --url <url>', 'url to check', URL_DEFAULT)
+        .option('-u, --url <url>', 'url to check', undefined)
         .parse(process.argv);
-        console.log(program.url)
+        //console.log(program.url)
     if (program.url) {
 	rest.get(program.url).on('complete', function(result) {
-	    fs.writeFileSync("myfile.html", result);   // Added this line
-	    var checkJson = checkHtmlFile("myfile.html", program.checks);
+	    fs.writeFile('myfile.html', result);   // Added this line
+	    var checkJson = checkHtmlFile('myfile.html', program.checks);
 	    var outJson = JSON.stringify(checkJson, null, 4);
 	    console.log(outJson);
 	});
 
     } else {
-	var checkJson = checkHtmlFile(result, program.checks);
+	var checkJson = checkHtmlFile(program.file, program.checks);
 	var outJson = JSON.stringify(checkJson, null, 4);
 	console.log(outJson);
     }
